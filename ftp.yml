@@ -1,0 +1,11 @@
+---
+- hosts: all
+  remote_user: root
+  become: true
+  tasks:
+  - name: Install ftp server
+    yum: name=vsftpd state=latest
+  - name: Start the service
+    service: name=vsftpd state=started enabled=yes
+  - name: create the contents
+    copy: dest=/var/ftp/pub/welcome.txt content="welcome"
