@@ -1,0 +1,16 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: Install httpd service
+    yum: name=httpd state=latest
+  - name: Start the service
+    service: name=httpd state=started enabled=yes
+  - name: Create Index.html Page
+    file: path=/var/www/html/index.html state=touch
+  - name: write the content
+    lineinfile: dest=/var/www/html/index.html state=present line=welcome{{ansible_hostname}}
+  - name: firewall rules
+    firewalld: service=http state=enabled  permanent=true immediate=yes
+  - name: start firewall
+    service: name=firewalld state=started
